@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./src/mongo.config.js";
 import shortUrlRoute from "./src/routes/shortUrl.route.js";
 import { redirectFromShortUrl } from "./src/controllers/shortUrl.controller.js";
+import { errorHandler } from "./src/utils/errorHandler.js";
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/create", shortUrlRoute);
 app.get("/:id", redirectFromShortUrl);
+
+app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
   try {
