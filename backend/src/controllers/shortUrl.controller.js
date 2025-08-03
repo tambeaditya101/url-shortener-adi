@@ -1,11 +1,22 @@
 import { getRequestedUrlObj } from '../dao/shortUrl.dao.js';
-import { createShortUrlServiceWithoutUser } from '../services/shortUrl.service.js';
+import {
+  createShortUrlServiceWithoutUser,
+  createShortUrlServiceWithUser,
+} from '../services/shortUrl.service.js';
 import tryCatchWrapper from '../utils/tryCatchWrapper.js';
 
 export const createShortUrl = tryCatchWrapper(async (req, res, next) => {
-  const { url } = req.body;
-  const shortUrl = await createShortUrlServiceWithoutUser(url);
-  res.status(200).json({ shortUrl: `${process.env.BASE_URL}${shortUrl}` });
+  const { url, slug } = req.body;
+
+  const user = req.user;
+  let shortUrl;
+  if (user) {
+    shortUrl = await createShortUrlServiceWithUser(url, user._id, slug);
+    res.status(200).json({ shortUrl: `${process.env.BASE_URL}${shortUrl}` });
+  } else {
+    shortUrl = await createShortUrlServiceWithoutUser(url);
+    res.status(200).json({ shortUrl: `${process.env.BASE_URL}${shortUrl}` });
+  }
 });
 
 export const redirectFromShortUrl = tryCatchWrapper(async (req, res) => {

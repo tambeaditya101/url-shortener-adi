@@ -1,5 +1,5 @@
-import { ShortUrl } from "../models/shorturl.model.js";
-import { ConflictError } from "../utils/errorHandler.js";
+import { ShortUrl } from '../models/shorturl.model.js';
+import { ConflictError } from '../utils/errorHandler.js';
 
 export const saveUrl = async (url, shortUrl, userId) => {
   try {
@@ -13,7 +13,7 @@ export const saveUrl = async (url, shortUrl, userId) => {
     await newUrl.save();
   } catch (error) {
     if (error.code == 11000) {
-      throw new ConflictError("Short URL already exists");
+      throw new ConflictError('Short URL already exists');
     }
     throw new Error(error);
   }
@@ -24,4 +24,8 @@ export const getRequestedUrlObj = async (id) => {
     { shortUrl: id },
     { $inc: { clicks: 1 } }
   );
+};
+
+export const getShortUrlBySlug = async (slug) => {
+  return await ShortUrl.findOne({ shortUrl: slug });
 };
