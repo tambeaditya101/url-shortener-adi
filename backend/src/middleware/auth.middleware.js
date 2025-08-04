@@ -1,4 +1,5 @@
-import { verifyToken } from '../utils/helper';
+import { getUserById } from '../dao/user.dao.js';
+import { verifyToken } from '../utils/helper.js';
 
 export const authMiddleware = async (req, res, next) => {
   const { accessToken } = req.cookies;
@@ -13,6 +14,6 @@ export const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Unauthorized', error });
   }
 };

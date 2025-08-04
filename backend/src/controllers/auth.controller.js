@@ -12,7 +12,7 @@ export const registerUser = tryCatchWrapper(async (req, res, next) => {
 
   req.user = user;
   res.cookie('accessToken', token, cookieOptions);
-  res.status(201).json({ message: 'User created successfully', token });
+  res.status(201).json({ message: 'User created successfully', user });
 });
 
 export const loginUser = tryCatchWrapper(async (req, res, next) => {
@@ -21,5 +21,9 @@ export const loginUser = tryCatchWrapper(async (req, res, next) => {
 
   req.user = user;
   res.cookie('accessToken', token, cookieOptions);
-  res.status(200).json({ message: 'Login successful', token });
+  res.status(200).json({ message: 'Login successful', user });
+});
+
+export const getCurrentUser = tryCatchWrapper(async (req, res, next) => {
+  res.status(200).json({ user: req.user });
 });

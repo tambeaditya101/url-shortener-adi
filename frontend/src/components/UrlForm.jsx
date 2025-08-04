@@ -1,17 +1,47 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import confetti from 'canvas-confetti';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createShortUrl } from '../api/shortUrl.api';
 
 function UrlForm() {
   const [url, setUrl] = useState('https://www.google.com/');
+  const [slug, setSlug] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const queryClient = useQueryClient();
+
+  const createUrlMutation = useMutation({
+    mutationFn: ({ url, slug }) => createShortUrl(url, slug),
+    onSuccess: (data) => {
+      setShortUrl(data);
+      setSlug('');
+
+      // 🎉 Confetti blast!
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b'],
+      });
+
+      // Invalidate and refetch user URLs if authenticated
+      if (isAuthenticated) {
+        queryClient.invalidateQueries({ queryKey: ['userUrls'] });
+      }
+    },
+    onError: (error) => {
+      console.error('Error creating short URL:', error);
+    },
+  });
   const handleSubmit = async () => {
-    setLoading(true);
-    const data = await createShortUrl(url);
-    setShortUrl(data);
-    setLoading(false);
+    createUrlMutation.mutate({
+      url,
+      slug: isAuthenticated ? slug : null,
+    });
   };
 
   const handleCopy = async () => {
@@ -29,20 +59,29 @@ function UrlForm() {
       <div className='space-y-4'>
         <input
           type='url'
-          placeholder='Enter your URL'
+          placeholder='Enter URL e.g. https://www.google.com/'
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           required
           className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
 
+        {isAuthenticated && (
+          <input
+            type='text'
+            placeholder='Custom url (optional)'
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+            className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+        )}
+
         <button
           type='submit'
           onClick={handleSubmit}
-          disabled={loading}
           className='cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 transition-colors'
         >
-          {loading ? 'Shortening...' : 'Shorten URL'}
+          Shorten URL
         </button>
       </div>
 
@@ -54,7 +93,7 @@ function UrlForm() {
               href={shortUrl}
               target='_blank'
               rel='noopener noreferrer'
-              className='text-blue-600 hover:text-blue-800 underline break-all'
+              className='text-blue-600 hover:text-blue-800 underline break-all cursor-pointer'
             >
               {shortUrl}
             </a>

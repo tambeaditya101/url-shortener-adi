@@ -1,1 +1,20 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+.glow-border {
+  position: relative;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4);
+  border-radius: inherit;
+  z-index: -1;
+  animation: gradient-pulse 3s ease-in-out infinite;
+}

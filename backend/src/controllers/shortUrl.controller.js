@@ -2,6 +2,7 @@ import { getRequestedUrlObj } from '../dao/shortUrl.dao.js';
 import {
   createShortUrlServiceWithoutUser,
   createShortUrlServiceWithUser,
+  getUserUrlsService,
 } from '../services/shortUrl.service.js';
 import tryCatchWrapper from '../utils/tryCatchWrapper.js';
 
@@ -27,4 +28,10 @@ export const redirectFromShortUrl = tryCatchWrapper(async (req, res) => {
   } else {
     res.status(404).json({ message: 'Requested url does not exist!' });
   }
+});
+
+export const getUserUrls = tryCatchWrapper(async (req, res) => {
+  const userId = req.user._id;
+  const urls = await getUserUrlsService(userId);
+  res.status(200).json({ urls });
 });
