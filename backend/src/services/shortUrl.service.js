@@ -1,4 +1,8 @@
-import { getShortUrlBySlug, saveUrl } from '../dao/shortUrl.dao.js';
+import {
+  getShortUrlBySlug,
+  getUserUrls,
+  saveUrl,
+} from '../dao/shortUrl.dao.js';
 import { generateNanoId } from '../utils/helper.js';
 
 export const createShortUrlServiceWithoutUser = async (url) => {
@@ -25,4 +29,8 @@ export const createShortUrlServiceWithUser = async (
   }
   await saveUrl(url, shortUrl, userId);
   return shortUrl;
+};
+
+export const getUserUrlsService = async (userId) => {
+  return await getUserUrls(userId);
 };

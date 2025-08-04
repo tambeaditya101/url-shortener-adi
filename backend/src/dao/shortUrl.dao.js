@@ -29,3 +29,7 @@ export const getRequestedUrlObj = async (id) => {
 export const getShortUrlBySlug = async (slug) => {
   return await ShortUrl.findOne({ shortUrl: slug });
 };
+
+export const getUserUrls = async (userId) => {
+  return await ShortUrl.find({ user: userId }).sort({ createdAt: -1 });
+};
