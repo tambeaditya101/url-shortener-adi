@@ -44,6 +44,10 @@ function UrlForm() {
   });
 
   const handleSubmit = async () => {
+    if (!url || !url.trim()) {
+      setError('Please enter a URL');
+      return;
+    }
     createUrlMutation.mutate({
       url,
       slug: isAuthenticated ? slug : null,
