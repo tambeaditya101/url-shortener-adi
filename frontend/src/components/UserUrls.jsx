@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getUserUrls } from '../api/shortUrl.api';
+import config from '../utils/config';
 
 function UserUrls() {
   const [copiedId, setCopiedId] = useState(null);
@@ -62,17 +63,17 @@ function UserUrls() {
                 </p>
                 <div className='flex items-center space-x-2.5 mt-1'>
                   <a
-                    href={`${'http://localhost:3000'}/${url.shortUrl}`}
+                    href={`${config.API_BASE_URL}/${url.shortUrl}`}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='text-blue-600 hover:text-blue-800 text-sm'
                   >
-                    {`${'http://localhost:3000'}/${url.shortUrl}`}
+                    {`${config.API_BASE_URL}/${url.shortUrl}`}
                   </a>
                   <button
                     onClick={() =>
                       copyToClipboard(
-                        `http://localhost:3000/${url.shortUrl}`,
+                        `${config.API_BASE_URL}/${url.shortUrl}`,
                         url._id
                       )
                     }

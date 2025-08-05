@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { createShortUrl } from '../api/shortUrl.api';
 
 function UrlForm() {
-  const [url, setUrl] = useState('https://www.google.com/');
+  const [url, setUrl] = useState('');
   const [slug, setSlug] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
@@ -110,12 +110,6 @@ function UrlForm() {
           </div>
         </div>
       )}
-
-      {/* {error && (
-        <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-md'>
-          <p className='text-red-700'>{error}</p>
-        </div>
-      )} */}
     </>
   );
 }
