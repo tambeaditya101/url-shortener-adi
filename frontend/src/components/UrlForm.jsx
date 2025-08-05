@@ -9,6 +9,7 @@ function UrlForm() {
   const [slug, setSlug] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -17,8 +18,11 @@ function UrlForm() {
   const createUrlMutation = useMutation({
     mutationFn: ({ url, slug }) => createShortUrl(url, slug),
     onSuccess: (data) => {
-      setShortUrl(data);
-      setSlug('');
+      setError('');
+      setTimeout(() => {
+        setShortUrl(data);
+        setSlug('');
+      }, 0);
 
       // 🎉 Confetti blast!
       confetti({
@@ -35,8 +39,10 @@ function UrlForm() {
     },
     onError: (error) => {
       console.error('Error creating short URL:', error);
+      setError(error.message);
     },
   });
+
   const handleSubmit = async () => {
     createUrlMutation.mutate({
       url,
@@ -79,9 +85,10 @@ function UrlForm() {
         <button
           type='submit'
           onClick={handleSubmit}
+          disabled={createUrlMutation.isPending}
           className='cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 transition-colors'
         >
-          Shorten URL
+          {createUrlMutation.isPending ? 'Shortening...' : 'Shorten URL'}
         </button>
       </div>
 
@@ -108,6 +115,11 @@ function UrlForm() {
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
+        </div>
+      )}
+      {error && (
+        <div className='p-3 bg-red-50 border border-red-200 rounded-md mt-2'>
+          <p className='text-red-700 text-sm'>{error}</p>
         </div>
       )}
     </>

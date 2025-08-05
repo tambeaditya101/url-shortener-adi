@@ -26,9 +26,8 @@ function SignupForm({ setShowLoginForm }) {
       // Handle successful registration (redirect, store token, etc.)
     } catch (err) {
       setError(err.message);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

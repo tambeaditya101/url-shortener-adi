@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import UrlForm from '../components/UrlForm';
 import UserUrls from '../components/UserUrls';
@@ -8,8 +9,10 @@ function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = () => {
+    setLoggingOut(true);
     dispatch(logout());
     navigate({ to: '/' });
   };
@@ -23,9 +26,10 @@ function Dashboard() {
         </div>
         <button
           onClick={handleLogout}
-          className='cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors text-sm'
+          disabled={loggingOut}
+          className='cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 disabled:bg-red-300 transition-colors text-sm'
         >
-          Logout
+          {loggingOut ? 'Logging out...' : 'Logout'}
         </button>
       </div>
       <UrlForm />

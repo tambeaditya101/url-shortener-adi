@@ -28,9 +28,8 @@ function LoginForm({ setShowLoginForm }) {
     } catch (err) {
       console.log(err.message, '::adiii');
       setError(err.message);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
