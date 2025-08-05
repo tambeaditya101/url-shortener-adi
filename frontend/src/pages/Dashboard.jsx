@@ -18,7 +18,7 @@ function Dashboard() {
   };
 
   return (
-    <div className='max-w-xl mx-auto mt-20  p-8 glow-border shadow-lg'>
+    <div className='sm:max-w-lg mx-1.5 sm:mx-auto mt-20 p-6 glow-border shadow-lg'>
       <div className='flex justify-between items-center mb-6'>
         <div>
           <h2 className='text-2xl font-bold text-gray-800'>Dashboard</h2>

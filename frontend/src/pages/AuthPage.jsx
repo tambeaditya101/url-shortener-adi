@@ -5,7 +5,7 @@ import SignupForm from '../components/SignupForm';
 function AuthPage() {
   const [showLoginForm, setShowLoginForm] = useState(true);
   return (
-    <div className='max-w-md mx-auto mt-20  p-8 glow-border shadow-lg'>
+    <div className='max-w-md mx-1.5 sm:mx-auto mt-20 p-6 glow-border shadow-lg'>
       {showLoginForm ? (
         <LoginForm setShowLoginForm={setShowLoginForm} />
       ) : (

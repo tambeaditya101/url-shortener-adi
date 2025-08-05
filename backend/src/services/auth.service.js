@@ -17,6 +17,11 @@ export const registerUserService = async (name, email, password) => {
 
 export const loginUserService = async (email, password) => {
   const user = await getUserByEmail(email);
+  if (!user) {
+    throw new BadRequestError(
+      'No user found with this email. Please sign up first.'
+    );
+  }
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!user || !isPasswordValid) {
     throw new BadRequestError('Invalid Credentials');

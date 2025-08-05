@@ -3,7 +3,7 @@ import UrlForm from '../components/UrlForm';
 
 function HomePage() {
   return (
-    <div className='max-w-md mx-auto mt-20 p-8 glow-border shadow-lg'>
+    <div className='max-w-md mx-1.5 sm:mx-auto mt-20 p-6 glow-border shadow-lg'>
       <div className='flex justify-center items-center mb-6'>
         <h2 className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 transition-all duration-300 [text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]'>
           URL Shortener
