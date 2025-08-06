@@ -2,8 +2,17 @@ import { getUserById } from '../dao/user.dao.js';
 import { verifyToken } from './helper.js';
 
 export const attachUser = async (req, res, next) => {
-  const token = req.cookies.accessToken;
+  // Check Authorization header first (for localStorage tokens)
+  const authHeader = req.headers.authorization;
+  const headerToken = authHeader && authHeader.split(' ')[1];
+
+  // Fallback to cookie (for backward compatibility)
+  // const cookieToken = req.cookies.accessToken;
+
+  const token = headerToken;
+
   if (!token) return next();
+
   try {
     const decoded = verifyToken(token);
     const user = await getUserById(decoded);

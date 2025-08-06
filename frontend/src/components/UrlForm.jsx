@@ -19,6 +19,10 @@ function UrlForm() {
     mutationFn: ({ url, slug }) => createShortUrl(url, slug),
     onSuccess: (data) => {
       setError('');
+      // Clear form inputs
+      setUrl('');
+      setSlug('');
+
       setTimeout(() => {
         setShortUrl(data);
         setSlug('');

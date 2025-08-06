@@ -24,7 +24,7 @@ function LoginForm({ setShowLoginForm }) {
         localStorage.setItem('accessToken', data?.token);
       }
 
-      console.log('Login successful:', data.message);
+      console.log(data?.message);
       dispatch(login(data.user));
       navigate({ to: '/dashboard' });
       // if login success, redirect to homepage
