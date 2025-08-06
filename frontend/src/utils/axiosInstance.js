@@ -7,6 +7,20 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// Request interceptor to add Authorization header
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -22,6 +36,11 @@ axiosInstance.interceptors.response.use(
       switch (status) {
         case 400:
           errorMessage = data.message || 'Bad request';
+          break;
+        case 401:
+          errorMessage = data.message || 'Unauthorized';
+          // Optional: Clear token on 401 and redirect to login
+          localStorage.removeItem('accessToken');
           break;
         case 404:
           errorMessage = data.message || 'Resource not found';

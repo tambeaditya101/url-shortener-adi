@@ -20,7 +20,12 @@ function SignupForm({ setShowLoginForm }) {
 
     try {
       const data = await registerUser(name, email, password);
-      console.log('Registration successful:', data);
+      console.log('Registration successful:', data.message);
+
+      if (data?.token) {
+        localStorage.setItem('accessToken', data?.token);
+      }
+
       dispatch(login(data.user));
       navigate({ to: '/dashboard' });
       // Handle successful registration (redirect, store token, etc.)
