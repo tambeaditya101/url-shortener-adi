@@ -14,6 +14,7 @@ function Dashboard() {
   const handleLogout = () => {
     setLoggingOut(true);
     dispatch(logout());
+    localStorage.removeItem('accessToken');
     navigate({ to: '/' });
   };
 

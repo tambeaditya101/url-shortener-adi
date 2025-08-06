@@ -19,7 +19,12 @@ function LoginForm({ setShowLoginForm }) {
 
     try {
       const data = await loginUser(email, password);
-      console.log('Login successful:', data);
+      // Store token in localStorage
+      if (data?.token) {
+        localStorage.setItem('accessToken', data?.token);
+      }
+
+      console.log('Login successful:', data.message);
       dispatch(login(data.user));
       navigate({ to: '/dashboard' });
       // if login success, redirect to homepage
